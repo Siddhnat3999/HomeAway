@@ -9,7 +9,12 @@ interface IParams {
 export default async function getReservations(params: IParams) {
   try {
     // const { listingId, userId, authorId } = params;//
-    const { listingId, userId, authorId } = params;
+    const resolvedParams = await params;
+    
+    const listingId = resolvedParams.listingId;
+    const userId = resolvedParams.userId;
+    const authorId = resolvedParams.authorId;
+
 
     const query: any = {};
 

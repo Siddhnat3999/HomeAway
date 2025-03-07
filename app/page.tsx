@@ -10,17 +10,17 @@ interface HomeProps{
 }
 const Home = async({searchParams}:  HomeProps) => { 
   //const listings=await getListings(searchParams); //
+  const resolvedParams = await searchParams;
   const listingParams: IListingsParams = {
-    userId: typeof searchParams.userId === "string" ? searchParams.userId : undefined,
-    guestCount: searchParams.guestCount ? Number(searchParams.guestCount) : undefined,
-    roomCount: searchParams.roomCount ? Number(searchParams.roomCount) : undefined,
-    bathroomCount: searchParams.bathroomCount ? Number(searchParams.bathroomCount) : undefined,
-    startDate: typeof searchParams.startDate === "string" ? searchParams.startDate : undefined,
-    endDate: typeof searchParams.endDate === "string" ? searchParams.endDate : undefined,
-    locationValue: typeof searchParams.locationValue === "string" ? searchParams.locationValue : undefined,
-    category: typeof searchParams.category === "string" ? searchParams.category : undefined,
+    userId: typeof resolvedParams.userId === "string" ? resolvedParams.userId : undefined,
+    guestCount: resolvedParams.guestCount ? Number(resolvedParams.guestCount) : undefined,
+    roomCount: resolvedParams.roomCount ? Number(resolvedParams.roomCount) : undefined,
+    bathroomCount: resolvedParams.bathroomCount ? Number(resolvedParams.bathroomCount) : undefined,
+    startDate: typeof resolvedParams.startDate === "string" ? resolvedParams.startDate : undefined,
+    endDate: typeof resolvedParams.endDate === "string" ? resolvedParams.endDate : undefined,
+    locationValue: typeof resolvedParams.locationValue === "string" ? resolvedParams.locationValue : undefined,
+    category: typeof resolvedParams.category === "string" ? resolvedParams.category : undefined,
   };
-
   
   // const currentUser=await getCurrentUser();
   const listings = await getListings(listingParams);
