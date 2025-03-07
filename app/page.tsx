@@ -1,6 +1,71 @@
-export default function Home()
-{
+import getCurrentUser from "./actions/getCurrentUser";
+import getListings, { IListingsParams } from "./actions/getListings";
+import ClientOnly from "./components/ClientOnly";
+import Container from "./components/container";
+import EmptyState from "./components/EmptyState";
+import ListingCard from "./components/listings/ListingCard";
+
+interface HomeProps{
+  searchParams: IListingsParams
+}
+const Home = async({searchParams}:  HomeProps) => { 
+  //const listings=await getListings(searchParams); //
+  const listingParams: IListingsParams = {
+    userId: typeof searchParams.userId === "string" ? searchParams.userId : undefined,
+    guestCount: searchParams.guestCount ? Number(searchParams.guestCount) : undefined,
+    roomCount: searchParams.roomCount ? Number(searchParams.roomCount) : undefined,
+    bathroomCount: searchParams.bathroomCount ? Number(searchParams.bathroomCount) : undefined,
+    startDate: typeof searchParams.startDate === "string" ? searchParams.startDate : undefined,
+    endDate: typeof searchParams.endDate === "string" ? searchParams.endDate : undefined,
+    locationValue: typeof searchParams.locationValue === "string" ? searchParams.locationValue : undefined,
+    category: typeof searchParams.category === "string" ? searchParams.category : undefined,
+  };
+
+  
+  // const currentUser=await getCurrentUser();
+  const listings = await getListings(listingParams);
+  const currentUser = await getCurrentUser();
+
+    if (listings.length===0)
+    {
+      return(
+        <ClientOnly>
+          <EmptyState showReset />
+        </ClientOnly>
+      )
+    }
+
+    // throw new Error('Something went wrong');
+
   return (
-    <div className="text-rose-500 text-2xl">Hello Airbnb</div>
+    <ClientOnly>
+      <Container>
+      <div className="
+        pt-28 /* Increased padding-top */
+        grid
+        grid-cols-1
+        sm:grid-cols-2
+        md:grid-cols-3
+        lg:grid-cols-4
+        xl:grid-cols-5
+        2xl:grid-cols-6
+        gap-8
+      ">
+  {listings.map((listing)=> {
+    return (
+      <ListingCard
+        currentUser={currentUser} 
+        key={listing.id} 
+        data={listing}
+        />
+
+    )
+  })}
+</div>
+
+      </Container>
+    </ClientOnly>
   )
 } 
+
+export default Home;
